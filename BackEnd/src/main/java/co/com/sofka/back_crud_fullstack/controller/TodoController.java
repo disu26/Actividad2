@@ -9,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @CrossOrigin
 @Slf4j
 @RestController
@@ -20,7 +18,7 @@ public final class TodoController {
     @Autowired
     TodoService service;
 
-    private Response response = new Response();
+    private final Response response = new Response();
 
     private HttpStatus httpStatus = HttpStatus.OK;
 
@@ -33,7 +31,7 @@ public final class TodoController {
         }catch (Exception exception){
             getErrorMessageInternal(exception);
         }
-        return new ResponseEntity(response, httpStatus);
+        return new ResponseEntity<>(response, httpStatus);
     }
 
     @GetMapping(path = "/{id}")
@@ -50,7 +48,7 @@ public final class TodoController {
         }catch (Exception exception){
             getErrorMessageInternal(exception);
         }
-        return new ResponseEntity(response, httpStatus);
+        return new ResponseEntity<>(response, httpStatus);
     }
 
     @PostMapping()
@@ -62,7 +60,7 @@ public final class TodoController {
         }catch (Exception exception){
             getErrorMessageInternal(exception);
         }
-        return new ResponseEntity(response, httpStatus);
+        return new ResponseEntity<>(response, httpStatus);
     }
 
     @PutMapping(path = "/update/{id}")
@@ -74,7 +72,7 @@ public final class TodoController {
         }catch (Exception exception){
             getErrorMessageInternal(exception);
         }
-        return new ResponseEntity(response, httpStatus);
+        return new ResponseEntity<>(response, httpStatus);
     }
 
     @DeleteMapping(path = "/{id}")
@@ -92,7 +90,7 @@ public final class TodoController {
         }catch (Exception exception){
             getErrorMessageInternal(exception);
         }
-        return new ResponseEntity(response, httpStatus);
+        return new ResponseEntity<>(response, httpStatus);
     }
 
     private void getErrorMessageInternal(Exception exception){
