@@ -16,6 +16,9 @@ class TodoServiceTest {
     @Autowired
     TodoRepository repository;
 
+    /**
+     * Test de crear un todo.
+     */
     @Test
     void testCreateTodo(){
         TodoDomain newTodo = new TodoDomain();
@@ -23,12 +26,18 @@ class TodoServiceTest {
         assertNotNull(todoCreated);
     }
 
+    /**
+     * Test de obtener un todo.
+     */
     @Test
     void getTodos(){
         var todosList = repository.findAll();
         assertThat(todosList).size().isPositive();
     }
 
+    /**
+     * Test de obtener un todo por id.
+     */
     @Test
     void getTodoById(){
         Long idBuscar = 46L;

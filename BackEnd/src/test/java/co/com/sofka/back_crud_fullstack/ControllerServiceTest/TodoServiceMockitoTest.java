@@ -22,6 +22,9 @@ public final class TodoServiceMockitoTest {
     @Autowired
     TodoService service;
 
+    /**
+     * Test del funcionamiento en mockito.
+     */
     @Test
     public void testTodoMock(){
         when(repository.findAll()).thenReturn(new ArrayList<>());
