@@ -9,9 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
 @Slf4j
 @RestController
+@CrossOrigin(origins = "http://localhost:3000", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT,RequestMethod.PATCH})
 @RequestMapping("/api/todo")
 public final class TodoController {
 
@@ -51,6 +51,7 @@ public final class TodoController {
         return new ResponseEntity<>(response, httpStatus);
     }
 
+    @CrossOrigin
     @PostMapping()
     public ResponseEntity<Response> createTodo(@RequestBody TodoDomain todo){
         response.restart();
@@ -94,7 +95,7 @@ public final class TodoController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Response> deleteTodo(@PathVariable("id") Long id){
+    public ResponseEntity<Response> deleteTodo(@RequestBody @PathVariable("id") Long id){
         response.restart();
         try {
             response.data = service.delete(id);

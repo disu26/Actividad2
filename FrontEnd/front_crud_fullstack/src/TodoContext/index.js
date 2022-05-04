@@ -1,20 +1,34 @@
-import React, { useId } from 'react';
-import { useLocalStorage } from './useLocalStorage';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useState, useEffect } from 'react';
+
+const HOST_API = "http://localhost:9090/api/todo";
 
 const TodoContext = React.createContext();
 
 function TodoProvider(props) {
-  const {
-    item: todos,
-    saveItem: saveTodos,
-    loading,
-    error,
-  } = useLocalStorage('TODOS_V1', []);
-  const [searchValue, setSearchValue] = React.useState('');
-  const [openModal, setOpenModal] = React.useState(false);
 
-  const completedTodos = todos.filter(todo => !!todo.completed).length;
+  const [todos, setTodos] = useState([]);
+
+  const mostrarTodos = async() => {
+    const response = await fetch(HOST_API, {
+      method: "GET",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin'
+    });
+    const todosList = await response.json();
+    setTodos(todosList.data);
+  }
+
+  useEffect(() => {
+    mostrarTodos();
+  }, [todos])
+  
+  const [searchValue, setSearchValue] = useState('');
+  const [openModal, setOpenModal] = useState(false);
+
+  const completedTodos = todos.filter(todo => !!todo.completado).length;
   const totalTodos = todos.length;
 
   let searchedTodos = [];
@@ -29,34 +43,36 @@ function TodoProvider(props) {
     });
   }
 
-  const addTodo = (text) => {
-    const newTodos = [...todos];
-    newTodos.push({
-      id: uuidv4(),
-      completed: false,
-      text,
-    });
-    saveTodos(newTodos);
+  const addTodo = async (text) => {
+    const newTodo = {
+      text: text
+    }
+    await fetch(HOST_API, {
+      method: "POST",
+      mode: 'cors',
+      body: JSON.stringify(newTodo),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin'
+    })
+    
   };
 
-  const completeTodo = (text) => {
-    const todoIndex = todos.findIndex(todo => todo.text === text);
-    const newTodos = [...todos];
-    newTodos[todoIndex].completed = true;
-    saveTodos(newTodos);
+  const completeTodo = async (id) => {
+    await fetch(`${HOST_API}/updateCompletado/${id}`, {
+      method: "PATCH"
+    })
   };
 
-  const deleteTodo = (text) => {
-    const todoIndex = todos.findIndex(todo => todo.text === text);
-    const newTodos = [...todos];
-    newTodos.splice(todoIndex, 1);
-    saveTodos(newTodos);
+  const deleteTodo = async (id) => {
+    await fetch(HOST_API+ "/" +id, {
+      method: "DELETE"
+    })
   };
   
   return (
     <TodoContext.Provider value={{
-      loading,
-      error,
       totalTodos,
       completedTodos,
       searchValue,
