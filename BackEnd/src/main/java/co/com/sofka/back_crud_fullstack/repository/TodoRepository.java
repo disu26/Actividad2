@@ -12,7 +12,7 @@ public interface TodoRepository extends JpaRepository<TodoDomain, Long> {
 
     @Modifying
     @Query("update TodoDomain todo set todo.completado= :completado where todo.id = :id")
-    public void updateCompletado(
+    void updateCompletado(
             @Param(value = "id") Long id,
             @Param(value = "completado") boolean completado
     );

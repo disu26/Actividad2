@@ -34,7 +34,8 @@ public class TodoService {
     @Transactional
     public TodoDomain updateCompleted(TodoDomain todo, Boolean completado){
         repository.updateCompletado(todo.getId(), completado);
-        return todo;
+        var newTodo = findById(todo.getId());
+        return newTodo.get();
     }
 
     @Transactional
