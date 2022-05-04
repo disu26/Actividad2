@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
+/**
+ * String con la conexión al api de spring.
+ */
 const HOST_API = "http://localhost:9090/api/todo";
 
 const TodoContext = React.createContext();
@@ -8,6 +11,9 @@ function TodoProvider(props) {
 
   const [todos, setTodos] = useState([]);
 
+  /**
+   * Se capturan los datos con un fetch que hace un get al host_api.
+   */
   const mostrarTodos = async() => {
     const response = await fetch(HOST_API, {
       method: "GET",
@@ -43,6 +49,10 @@ function TodoProvider(props) {
     });
   }
 
+  /**
+   * Se crean usuarios con un fetch que utiliza el metodo post y envia los datos del body en formato JSON.
+   * @param {} text 
+   */
   const addTodo = async (text) => {
     const newTodo = {
       text: text
@@ -59,12 +69,20 @@ function TodoProvider(props) {
     
   };
 
+  /**
+   * Se hace una actualización parcial para indicar que se completó el todo.
+   * @param {*} id 
+   */
   const completeTodo = async (id) => {
     await fetch(`${HOST_API}/updateCompletado/${id}`, {
       method: "PATCH"
     })
   };
 
+  /**
+   * Se hace uso de un fetch con metodo DELETE para eliminar un todo.
+   * @param {*} id 
+   */
   const deleteTodo = async (id) => {
     await fetch(HOST_API+ "/" +id, {
       method: "DELETE"
