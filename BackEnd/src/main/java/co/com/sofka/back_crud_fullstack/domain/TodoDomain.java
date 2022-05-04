@@ -16,5 +16,5 @@ public final class TodoDomain {
 
     private String text;
 
-    private Boolean completado;
+    private Boolean completado = Boolean.FALSE;
 }

@@ -32,6 +32,12 @@ public class TodoService {
     }
 
     @Transactional
+    public TodoDomain updateCompleted(TodoDomain todo, Boolean completado){
+        repository.updateCompletado(todo.getId(), completado);
+        return todo;
+    }
+
+    @Transactional
     public Boolean delete(Long id){
         var todo = repository.findById(id);
         if(todo.isPresent()){

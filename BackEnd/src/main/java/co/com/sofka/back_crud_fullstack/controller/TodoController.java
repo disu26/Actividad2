@@ -75,6 +75,24 @@ public final class TodoController {
         return new ResponseEntity<>(response, httpStatus);
     }
 
+    @PatchMapping(path = "/updateCompletado/{id}")
+    public ResponseEntity<Response> updateCompletado(@PathVariable("id") Long id){
+        response.restart();
+        try {
+            var todo = service.findById(id);
+            if(todo.isPresent()){
+                response.data = service.updateCompleted(todo.get(), Boolean.TRUE);
+                httpStatus = HttpStatus.OK;
+            }else {
+                response.message = "Todo no encontrado";
+                httpStatus = HttpStatus.NOT_FOUND;
+            }
+        }catch (Exception exception){
+            getErrorMessageInternal(exception);
+        }
+        return new ResponseEntity<>(response, httpStatus);
+    }
+
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Response> deleteTodo(@PathVariable("id") Long id){
         response.restart();
